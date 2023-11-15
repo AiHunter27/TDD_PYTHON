@@ -5,22 +5,51 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/configuration-reference/#jobs
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/configuration-reference/#executor-job
+  build-and-push:
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/configuration-reference/#steps
+      - image: cimg/python:3.8   #base:stable
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 19.03.13
       - run:
-          name: "Say hello"
+          name: "install docker client"
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y docker-ce-cli
+      - run:
+          name: "Say hello all"
           command: "echo Hello, World!"
+      - run:
+          name: Install Pip
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y python3-pip
+      - run:
+          name: Install Dependencies
+          command: |
+            pip install pytest
+
+# Build Docker image
+      - run:
+          name: Build Docker Image
+          command: docker build -t $DOCKERHUB_USERNAME/myapp:${CIRCLE_SHA1} -f .circleci/Dockerfile .
+      - run:
+          name: Docker Hub Login
+          command: echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_USERNAME --password-stdin
+
+     
+      # Push Docker image to Docker Hub
+      - run:
+          name: Push Docker Image
+          command: docker push $DOCKERHUB_USERNAME/myapp:${CIRCLE_SHA1}
+      - run:
+          name: "Say bye"
+          command: "echo bye guys see you ,astlavista"
 
 # Orchestrate jobs using workflows
 # See: https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
+  build-and-pushworkflow:
     jobs:
-      - say-hello
+      - build-and-push
