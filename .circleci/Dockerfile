@@ -3,8 +3,8 @@ FROM python:3.8-slim
 # Set working directory
 WORKDIR .
 # Copy
-COPY .circleci/sparse_recommender .
-COPY .circleci/test_sparse_recommender . 
+COPY .circleci/sparse_recommender.py .
+COPY .circleci/test_sparse_recommender.py . 
 # run
 
 CMD [ "pytest", "test_sparse_recommender.py" ]
