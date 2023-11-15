@@ -33,7 +33,7 @@ jobs:
 # Build Docker image
       - run:
           name: Build Docker Image
-          command: docker build -t $DOCKERHUB_USERNAME/TDD:${CIRCLE_SHA1} -f .circleci/Dockerfile .
+          command: docker build -t $DOCKERHUB_USERNAME/tdd:${CIRCLE_SHA1} -f .circleci/Dockerfile .
       - run:
           name: Docker Hub Login
           command: echo "$DOCKERHUB_PASSWORD" | docker login --username $DOCKERHUB_USERNAME --password-stdin
@@ -42,7 +42,7 @@ jobs:
       # Push Docker image to Docker Hub
       - run:
           name: Push Docker Image
-          command: docker push $DOCKERHUB_USERNAME/TDD:${CIRCLE_SHA1}
+          command: docker push $DOCKERHUB_USERNAME/tdd:${CIRCLE_SHA1}
       - run:
           name: "Say bye"
           command: "echo bye guys see you ,astlavista"
