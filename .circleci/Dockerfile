@@ -4,7 +4,7 @@ FROM python:3.8-slim
 WORKDIR .
 
 # Install pytest
-RUN pip install pytest
+RUN pip install --upgrade pip && pip install pytest
 
 # Copy
 COPY .circleci/sparse_recommender.py .
