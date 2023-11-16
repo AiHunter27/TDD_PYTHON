@@ -1,10 +1,8 @@
 # Use the official Python image from Docker Hub as the base image
 FROM python:3.8-slim
 
-# Install pip and pytest
-RUN apt-get update \
-    && apt-get install -y python3-pip \
-    && pip3 install pytest
+
+RUN apt-get update && apt-get install -y python3-pip && pip3 install pytest
 
 
 
