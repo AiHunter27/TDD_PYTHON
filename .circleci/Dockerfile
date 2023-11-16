@@ -2,13 +2,11 @@
 FROM python:3.8-slim
 
 
-RUN apt-get update && apt-get install -y python3-pip && pip3 install pytest
-
-
 
 # Set working directory
 WORKDIR .
 
+RUN pip3 install pytest
 
 
 # Copy
